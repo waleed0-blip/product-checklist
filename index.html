@@ -161,14 +161,24 @@
             align-items: center;
             gap: 6px;
             background-color: #fff;
-            border: 2px solid var(--primary-color);
+            border: 2px solid var(--border-color);
             border-radius: 25px;
             padding: 3px 5px 3px 15px;
+            transition: border-color 0.2s;
+        }
+
+        /* Border becomes primary brown when admin unlocks the file */
+        .admin-unlocked .export-box {
+            border-color: var(--primary-color);
         }
 
         .export-box span {
             font-size: 0.85rem;
             font-weight: bold;
+            color: #888;
+        }
+
+        .admin-unlocked .export-box span {
             color: var(--primary-color);
         }
 
@@ -180,16 +190,32 @@
             font-size: 0.85rem;
             outline: none;
             cursor: pointer;
+            background-color: #f5f5f5;
+            color: #888;
+            pointer-events: none;
+        }
+
+        .admin-unlocked .export-select {
+            background-color: #fff;
+            color: var(--text-color);
+            pointer-events: auto;
         }
 
         .export-btn {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: #ccc;
+            color: #666;
             border: none;
             padding: 6px 16px;
             border-radius: 20px;
             font-weight: bold;
             font-size: 0.85rem;
+            cursor: not-allowed;
+            transition: background 0.2s;
+        }
+
+        .admin-unlocked .export-btn {
+            background-color: var(--primary-color);
+            color: white;
             cursor: pointer;
         }
 
@@ -377,7 +403,6 @@
         .hidden-node { display: none !important; }
         .dimmed-node { opacity: 0.25; }
 
-        /* Print/PDF Layout overrides */
         @media print {
             .dashboard-controls, .add-node-btn, .delete-node-btn, #editModeBtn {
                 display: none !important;
@@ -458,7 +483,7 @@
             <button class="edit-toggle-btn" id="editModeBtn" onclick="toggleLiveEdit()">🔒 Unlock Admin Edit</button>
             <input type="text" id="dashboardSearch" class="search-bar" placeholder="Search parameters..." oninput="executeSearch()">
             
-            <!-- CLEANED EXPORT HUB -->
+            <!-- DOWNLOAD BOX (LOCKED UNTIL ADMIN LOGS IN) -->
             <div class="export-box">
                 <span>Save As:</span>
                 <select id="exportFormat" class="export-select">
@@ -466,7 +491,7 @@
                     <option value="pdf">PDF Document (.pdf)</option>
                     <option value="jpeg">Image Backup (.html)</option>
                 </select>
-                <button class="export-btn" onclick="executeNativeExport()">Go</button>
+                <button class="export-btn" id="exportGoBtn" onclick="executeNativeExport()">Go</button>
             </div>
         </div>
     </div>
@@ -845,10 +870,13 @@
         metricLabel.textContent = `${totalPercent}% Completed (${checkedMaster}/${totalMaster})`;
     }
 
-    // =============================================================
-    // LOCALIZED EXPORT ENGYNE ROUTINES (EXCEL, PDF, IMAGE ONLY)
-    // =============================================================
     function executeNativeExport() {
+        // Strict Security Guard: block download processing if admin mode isn't verified
+        if (!editMode) {
+            alert("Security Alert: Downloading files is restricted to Admin accounts. Please unlock Admin mode first.");
+            return;
+        }
+
         const format = document.getElementById('exportFormat').value;
 
         if (format === 'pdf') {
@@ -856,7 +884,6 @@
         } 
         else if (format === 'excel') {
             let csvContent = "data:text/csv;charset=utf-8,Category,Product,Requirement/Item,Status\n";
-            
             document.querySelectorAll('.product-column').forEach(col => {
                 const pName = col.querySelector('.product-title-node').innerText.trim();
                 const scriptVal = col.querySelector('.script-select').value.toUpperCase();
@@ -871,7 +898,6 @@
                     });
                 });
             });
-
             triggerNativeDownload(encodeURI(csvContent), "Operational_Checklist_Data.csv");
         } 
         else if (format === 'jpeg') {
