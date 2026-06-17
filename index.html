@@ -18,6 +18,15 @@
             --highlight-color: #fff59d;
         }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px 20px;
+            line-height: 1.5;
+        }
+
         /* MASTER LOGIN SCREEN STYLES */
         #masterAuthShield {
             position: fixed;
@@ -29,7 +38,6 @@
             align-items: center;
             z-index: 999999;
             color: white;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         .auth-card {
@@ -49,12 +57,6 @@
             font-size: 1.6rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-
-        .auth-card p {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
         }
 
         .auth-input {
@@ -91,20 +93,6 @@
             font-weight: bold;
             margin-top: 10px;
             display: none;
-        }
-
-        /* MAIN CONTENT HOLDER (Hidden until verified) */
-        #mainAppContainer {
-            display: none;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 30px 20px;
-            line-height: 1.5;
         }
 
         .container {
@@ -211,341 +199,4 @@
         .tab-btn.active, .tab-btn:hover {
             background-color: var(--accent-color);
             color: #111;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-        }
-
-        .right-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .edit-toggle-btn {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .edit-toggle-btn.editing-active {
-            background-color: var(--warning-color);
-        }
-
-        .export-box {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background-color: #fff;
-            border: 2px solid var(--primary-color);
-            border-radius: 25px;
-            padding: 3px 5px 3px 15px;
-        }
-
-        .export-box span {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .export-select {
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            font-weight: bold;
-            font-size: 0.85rem;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .export-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .search-bar {
-            padding: 10px 20px;
-            width: 150px;
-            border: 2px solid var(--border-color);
-            border-radius: 25px;
-            outline: none;
-            font-size: 0.9rem;
-        }
-
-        .tracker-card {
-            background: #f1f3f4;
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-        }
-
-        .tracker-meta {
-            display: flex; 
-            justify-content: space-between; 
-            font-size: 0.95rem; 
-            margin-bottom: 8px; 
-            font-weight: bold;
-        }
-
-        .progress-container {
-            background: #e0e0e0;
-            border-radius: 10px;
-            height: 10px;
-            overflow: hidden;
-        }
-
-        .summary-progress-bg {
-            background: #e0e0e0;
-            border-radius: 6px;
-            height: 6px;
-            overflow: hidden;
-            margin-top: 4px;
-        }
-
-        .progress-bar {
-            background: var(--success-color);
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        .matrix-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 25px;
-        }
-
-        .product-column {
-            background: var(--card-bg);
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-title-node {
-            background-color: var(--accent-color);
-            padding: 18px;
-            font-size: 1.3rem;
-            font-weight: 700;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .product-content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .block-section {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .block-header {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .script-select {
-            font-size: 0.8rem;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            pointer-events: none; 
-            background-color: #f5f5f5;
-        }
-
-        .admin-unlocked .script-select {
-            pointer-events: auto;
-            background-color: #fff;
-        }
-
-        .status-done { background-color: #e8f5e9; color: var(--success-color); border: 1px solid #c8e6c9; }
-        .status-progress { background-color: #fff3e0; color: var(--warning-color); border: 1px solid #ffe0b2; }
-        .status-pending { background-color: #ffebee; color: var(--danger-color); border: 1px solid #ffcdd2; }
-        
-        .status-badge-inline {
-            display: inline-block;
-            font-size: 0.75rem;
-            font-weight: bold;
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-
-        .node-list { list-style: none; padding: 0; margin: 0; min-height: 5px; }
-        .node-item {
-            padding: 8px 6px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            font-size: 0.9rem;
-            border-radius: 6px;
-            position: relative;
-        }
-
-        .node-item input[type="checkbox"] {
-            margin-top: 4px;
-            width: 15px;
-            height: 15px;
-            accent-color: var(--success-color);
-        }
-
-        .node-text { flex-grow: 1; outline: none; padding: 2px; border-radius: 4px; margin-right: 25px; }
-        
-        .editable-active .node-text, 
-        .editable-active .block-header span, 
-        .editable-active .product-title-node {
-            border: 1px dashed var(--warning-color) !important;
-            background-color: #fffde7;
-        }
-
-        .delete-node-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--danger-color);
-            font-weight: bold;
-            font-size: 0.85rem;
-            cursor: pointer;
-            position: absolute;
-            right: 4px;
-            top: 6px;
-        }
-
-        .admin-unlocked .delete-node-btn { display: block; }
-
-        .add-node-btn {
-            display: none;
-            background: none;
-            border: 1px dashed var(--warning-color);
-            color: var(--warning-color);
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 6px;
-            text-align: center;
-        }
-
-        .admin-unlocked .add-node-btn { display: block; }
-        .doc-id { font-size: 0.75rem; font-family: monospace; color: #555; background: #eaeaea; padding: 2px 6px; border-radius: 4px; margin-left: 4px; }
-        .hidden-node { display: none !important; }
-        .dimmed-node { opacity: 0.25; }
-
-        @media print {
-            .dashboard-controls, .add-node-btn, .delete-node-btn, #editModeBtn {
-                display: none !important;
-            }
-            body { padding: 0; background: #fff; }
-            .product-column { break-inside: avoid; margin-bottom: 20px; }
-        }
-    </style>
-</head>
-<body>
-
-<div id="masterAuthShield">
-    <div class="auth-card">
-        <h2>🔒 Secure Portal Gate</h2>
-        <p>This operational checklist is restricted. Enter the site security code to gain layout entry access.</p>
-        <input type="password" id="masterGateKeyInput" class="auth-input" placeholder="••••••••" onkeydown="if(event.key === 'Enter') handleMasterAuthCheck()">
-        <button class="auth-submit-btn" onclick="handleMasterAuthCheck()">Verify Entry Identity</button>
-        <div id="authErrorNode" class="error-message">✕ Invalid entry token. Please try again.</div>
-    </div>
-</div>
-
-<div id="mainAppContainer" class="container">
-    <header>
-        <h1>New Products Checklist</h1>
-    </header>
-
-    <div class="overall-view-panel">
-        <div class="overall-title">📊 Overall Matrix Summary View</div>
-        <table class="matrix-table" id="matrixTableSummary">
-            <thead>
-                <tr>
-                    <th>Template Category</th>
-                    <th>Mate 80 Pro</th>
-                    <th>Matepad Pro Max</th>
-                    <th>Watch Kids X1 Pro</th>
-                    <th>Watch Fit 5 Series</th>
-                    <th>Nova 15 Max</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Sales Product Scripts</strong></td>
-                    <td><span id="m-script-mate80" class="status-badge-inline status-done">✓ Done</span></td>
-                    <td><span id="m-script-matepad" class="status-badge-inline status-done">✓ Done</span></td>
-                    <td><span id="m-script-watchx1" class="status-badge-inline status-done">✓ Done</span></td>
-                    <td><span id="m-script-watchfit5" class="status-badge-inline status-done">✓ Done</span></td>
-                    <td><span id="m-script-nova15" class="status-badge-inline status-done">✓ Done</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Key Functions</strong></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-mate80"></div></div><div class="summary-metric" id="txt-key-mate80">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-matepad"></div></div><div class="summary-metric" id="txt-key-matepad">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-watchx1"></div></div><div class="summary-metric" id="txt-key-watchx1">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-watchfit5"></div></div><div class="summary-metric" id="txt-key-watchfit5">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-nova15"></div></div><div class="summary-metric" id="txt-key-nova15">0/0</div></td>
-                </tr>
-                <tr>
-                    <td><strong>Common Apps</strong></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-mate80"></div></div><div class="summary-metric" id="txt-app-mate80">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-matepad"></div></div><div class="summary-metric" id="txt-app-matepad">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-watchx1"></div></div><div class="summary-metric" id="txt-app-watchx1">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-watchfit5"></div></div><div class="summary-metric" id="txt-app-watchfit5">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-nova15"></div></div><div class="summary-metric" id="txt-app-nova15">0/0</div></td>
-                </tr>
-                <tr>
-                    <td><strong>Common Previous Series Issues</strong></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-mate80"></div></div><div class="summary-metric" id="txt-prev-mate80">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-matepad"></div></div><div class="summary-metric" id="txt-prev-matepad">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-watchx1"></div></div><div class="summary-metric" id="txt-prev-watchx1">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-watchfit5"></div></div><div class="summary-metric" id="txt-prev-watchfit5">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-nova15"></div></div><div class="summary-metric" id="txt-prev-nova15">0/0</div></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="dashboard-controls">
-        <div class="tabs" id="tabGroup">
-            <button class="tab-btn" onclick="switchProductFilter('mate80')">Mate 80 Pro</button>
-            <button class="tab-btn" onclick="switchProductFilter('matepad')">Matepad Pro Max</button>
-            <button class="tab-btn" onclick="switchProductFilter('watchx1')">Watch Kids X1 Pro</button>
-            <button class="tab-btn" onclick="switchProductFilter('watchfit5')">Watch Fit 5 Series</button>
-            <button class="tab-btn" onclick="switchProductFilter('nova15')">Nova 15 Max</button>
-        </div>
-        <div class="right-controls">
-            <button class="edit-toggle-btn" id="editModeBtn" onclick="toggleLiveEdit()">🔒 Unlock Admin Edit</button>
-            <input type="text" id="dashboardSearch" class="search-bar" placeholder="Search parameters..." oninput="executeSearch()">
-            
-            <div class="export-box">
-                <span>Save As:</span>
-                <select id="exportFormat" class="export-select">
-                    <option value="excel">Excel Document (.csv)</option>
+            box-shadow: 0
