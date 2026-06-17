@@ -18,6 +18,80 @@
             --highlight-color: #fff59d;
         }
 
+        #masterAuthShield {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: #5c3e35;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .auth-card {
+            background-color: white;
+            color: #2b2b2b;
+            padding: 40px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .auth-card h2 {
+            margin-top: 0;
+            color: #5c3e35;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .auth-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 12px 20px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 2px solid #d9d9d9;
+            border-radius: 25px;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+
+        .auth-input:focus {
+            border-color: #5c3e35;
+        }
+
+        .auth-submit-btn {
+            background-color: #5c3e35;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
@@ -180,8 +254,6 @@
             font-size: 0.85rem;
             outline: none;
             cursor: pointer;
-            background-color: #fff;
-            color: var(--text-color);
         }
 
         .export-btn {
@@ -193,11 +265,6 @@
             font-weight: bold;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .export-btn:hover {
-            background-color: #422c26;
         }
 
         .search-bar {
@@ -323,7 +390,7 @@
             border-radius: 10px;
         }
 
-        .node-list { list-style: none; padding: 0; margin: 0; }
+        .node-list { list-style: none; padding: 0; margin: 0; min-height: 5px; }
         .node-item {
             padding: 8px 6px;
             display: flex;
@@ -395,7 +462,17 @@
 </head>
 <body>
 
-<div class="container" id="captureArea">
+<div id="masterAuthShield">
+    <div class="auth-card">
+        <h2>🔒 Secure Portal Gate</h2>
+        <p>This operational checklist is restricted. Enter the site security code to gain layout entry access.</p>
+        <input type="password" id="masterGateKeyInput" class="auth-input" placeholder="••••••••" onkeydown="if(event.key === 'Enter') handleMasterAuthCheck()">
+        <button class="auth-submit-btn" onclick="handleMasterAuthCheck()">Verify Entry Identity</button>
+        <div id="authErrorNode" class="error-message">✕ Invalid entry token. Please try again.</div>
+    </div>
+</div>
+
+<div class="container" id="captureArea" style="visibility: hidden;">
     <header>
         <h1>New Products Checklist</h1>
     </header>
@@ -405,7 +482,7 @@
         <table class="matrix-table" id="matrixTableSummary">
             <thead>
                 <tr>
-                    <th>Evaluation Category</th>
+                    <th>Template Category</th>
                     <th>Mate 80 Pro</th>
                     <th>Matepad Pro Max</th>
                     <th>Watch Kids X1 Pro</th>
@@ -424,27 +501,27 @@
                 </tr>
                 <tr>
                     <td><strong>Key Functions</strong></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-mate80"></div></div><div class="summary-metric" id="txt-key-mate80">0/6</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-matepad"></div></div><div class="summary-metric" id="txt-key-matepad">0/4</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-watchx1"></div></div><div class="summary-metric" id="txt-key-watchx1">0/3</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-watchfit5"></div></div><div class="summary-metric" id="txt-key-watchfit5">0/5</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-nova15"></div></div><div class="summary-metric" id="txt-key-nova15">0/6</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-mate80"></div></div><div class="summary-metric" id="txt-key-mate80">0/0</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-matepad"></div></div><div class="summary-metric" id="txt-key-matepad">0/0</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-watchx1"></div></div><div class="summary-metric" id="txt-key-watchx1">0/0</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-watchfit5"></div></div><div class="summary-metric" id="txt-key-watchfit5">0/0</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-key-nova15"></div></div><div class="summary-metric" id="txt-key-nova15">0/0</div></td>
                 </tr>
                 <tr>
                     <td><strong>Common Apps</strong></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-mate80"></div></div><div class="summary-metric" id="txt-app-mate80">0/7</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-matepad"></div></div><div class="summary-metric" id="txt-app-matepad">0/7</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-mate80"></div></div><div class="summary-metric" id="txt-app-mate80">0/0</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-matepad"></div></div><div class="summary-metric" id="txt-app-matepad">0/0</div></td>
                     <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-watchx1"></div></div><div class="summary-metric" id="txt-app-watchx1">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-watchfit5"></div></div><div class="summary-metric" id="txt-app-watchfit5">0/7</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-nova15"></div></div><div class="summary-metric" id="txt-app-nova15">0/7</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-watchfit5"></div></div><div class="summary-metric" id="txt-app-watchfit5">0/0</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-app-nova15"></div></div><div class="summary-metric" id="txt-app-nova15">0/0</div></td>
                 </tr>
                 <tr>
                     <td><strong>Common Previous Series Issues</strong></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-mate80"></div></div><div class="summary-metric" id="txt-prev-mate80">0/4</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-mate80"></div></div><div class="summary-metric" id="txt-prev-mate80">0/0</div></td>
                     <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-matepad"></div></div><div class="summary-metric" id="txt-prev-matepad">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-watchx1"></div></div><div class="summary-metric" id="txt-prev-watchx1">0/3</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-watchx1"></div></div><div class="summary-metric" id="txt-prev-watchx1">0/0</div></td>
                     <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-watchfit5"></div></div><div class="summary-metric" id="txt-prev-watchfit5">0/0</div></td>
-                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-nova15"></div></div><div class="summary-metric" id="txt-prev-nova15">0/3</div></td>
+                    <td><div class="summary-progress-bg"><div class="progress-bar" id="m-prev-nova15"></div></div><div class="summary-metric" id="txt-prev-nova15">0/0</div></td>
                 </tr>
             </tbody>
         </table>
@@ -484,296 +561,308 @@
         </div>
     </div>
 
-    <div class="matrix-grid" id="matrixGrid">
-        
-        <div class="product-column" data-id="mate80">
-            <div class="product-title-node">Mate 80 Pro</div>
-            <div class="product-content">
-                <div class="block-section" data-section="script">
-                    <div class="block-header">
-                        <span>Sales Product Scripts</span> 
-                        <select class="script-select status-done" id="sel-mate80" onchange="updateScriptStatus(this, 'mate80')">
-                            <option value="pending">✕ Pending</option>
-                            <option value="progress">⚠ In Progress</option>
-                            <option value="done" selected>✓ Done</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="block-section" data-section="key">
-                    <div class="block-header"><span>Key Functions</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Android Auto installation Guide. <span class="doc-id">en-us16002773</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Overheating during heavy Usage (For 1 Hours).</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Ai Composition Feature in Camera.</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">AI features for the device <span class="doc-id">en-us16086415</span>.</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Speaker Sound Quality.</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Battery Draining fast in normal use.</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-                <div class="block-section" data-section="app">
-                    <div class="block-header"><span>Common Apps</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">WhatsApp (Test all functions)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">WhatsApp Business (Test all functions)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">YouTube (High resolution Videos)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Facebook</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">WPS Office</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Snapchat</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Instagram</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-                <div class="block-section" data-section="prev">
-                    <div class="block-header"><span>Common Previous Series Issues</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Unable to Upload YouTube Shorts</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Camera produce abnormal sound when zoom in 2x or higher</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">side fingerprint sensor</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Unable to open or download PDF files shared in WhatsApp</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-column" data-id="matepad">
-            <div class="product-title-node">Matepad Pro Max</div>
-            <div class="product-content">
-                <div class="block-section" data-section="script">
-                    <div class="block-header">
-                        <span>Sales Product Scripts</span> 
-                        <select class="script-select status-done" id="sel-matepad" onchange="updateScriptStatus(this, 'matepad')">
-                            <option value="pending">✕ Pending</option>
-                            <option value="progress">⚠ In Progress</option>
-                            <option value="done" selected>✓ Done</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="block-section" data-section="key">
-                    <div class="block-header"><span>Key Functions</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Inaccurate GPS/Location on Huawei Tablets. <span class="doc-id">en-us16078162</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Overheating during heavy Usage (For 1 Hours using go paint and Huawei notes).</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Refresh rate during playing any game</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Stylus response during drawing in go paint and writing in Huawei notes using Ai handwriting enhance and freescript</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-                <div class="block-section" data-section="app">
-                    <div class="block-header"><span>Common Apps</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">WhatsApp (Link Companion)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">WhatsApp Business (Link Companion)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">YouTube (High resolution Videos)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Facebook</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">WPS PC (Arabic and English)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Netflix</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Amazon Prime</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-                <div class="block-section" data-section="prev">
-                    <div class="block-header"><span>Common Previous Series Issues</span></div>
-                    <ul class="node-list"></ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-column" data-id="watchx1">
-            <div class="product-title-node">Watch Kids X1 Pro</div>
-            <div class="product-content">
-                <div class="block-section" data-section="script">
-                    <div class="block-header">
-                        <span>Sales Product Scripts</span> 
-                        <select class="script-select status-done" id="sel-watchx1" onchange="updateScriptStatus(this, 'watchx1')">
-                            <option value="pending">✕ Pending</option>
-                            <option value="progress">⚠ In Progress</option>
-                            <option value="done" selected>✓ Done</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="block-section" data-section="key">
-                    <div class="block-header"><span>Key Functions</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">My HUAWEI Mate X7 series phone cannot wirelessly reverse charge HUAWEI FreeBuds Pro 5</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">delay when make calls, watch videos, or play games</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Spatial Audio head tracking effects are not noticeable or sensitive enough <span class="doc-id">en-us15914293</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-                <div class="block-section" data-section="app">
-                    <div class="block-header"><span>Common Apps</span></div>
-                    <ul class="node-list"></ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-                <div class="block-section" data-section="prev">
-                    <div class="block-header"><span>Common Previous Series Issues</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">The Lossless icon is not displayed when I connect my HUAWEI FreeBuds Pro 5/FreeBuds Pro 4/FreeBuds Pro 3 earbuds to my phone <span class="doc-id">en-us15975613</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">The UI elements overlap on the pop-up screen after FreeBuds Pro 4 is connected to the phone. <span class="doc-id">en-us16084677</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">HUAWEI FreeBuds 5i/FreeBuds 6/FreeArc/FreeBuds Pro 4 earbuds cannot be fully charged, or stop charging <span class="doc-id">en-us16026161</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-column" data-id="watchfit5">
-            <div class="product-title-node">Watch Fit 5 Series</div>
-            <div class="product-content">
-                <div class="block-section" data-section="script">
-                    <div class="block-header">
-                        <span>Sales Product Scripts</span> 
-                        <select class="script-select status-done" id="sel-watchfit5" onchange="updateScriptStatus(this, 'watchfit5')">
-                            <option value="pending">✕ Pending</option>
-                            <option value="progress">⚠ In Progress</option>
-                            <option value="done" selected>✓ Done</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="block-section" data-section="key">
-                    <div class="block-header"><span>Key Functions</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Issues of launching the voice assistant on my watch <span class="doc-id">en-us15818740</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Mute incoming call using the watch</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Install Spotify app and the app can control music through the watch</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">use the ECG on Huawei Watches <span class="doc-id">en-us16055872</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Group's name of WhatsApp notification is not displayed on Watch when connected with iOS device <span class="doc-id">en-us15985122</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-                <div class="block-section" data-section="app">
-                    <div class="block-header"><span>Common Apps</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Spotify</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Petal Maps</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">YouTube (High resolution Videos)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Facebook</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">WPS PC (Arabic and English)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Netflix</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Amazon Prime</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-                <div class="block-section" data-section="prev">
-                    <div class="block-header"><span>Common Previous Series Issues</span></div>
-                    <ul class="node-list"></ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-column" data-id="nova15">
-            <div class="product-title-node">Nova 15 Max</div>
-            <div class="product-content">
-                <div class="block-section" data-section="script">
-                    <div class="block-header">
-                        <span>Sales Product Scripts</span> 
-                        <select class="script-select status-done" id="sel-nova15" onchange="updateScriptStatus(this, 'nova15')">
-                            <option value="pending">✕ Pending</option>
-                            <option value="progress">⚠ In Progress</option>
-                            <option value="done" selected>✓ Done</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="block-section" data-section="key">
-                    <div class="block-header"><span>Key Functions</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Android Auto installation Guide. <span class="doc-id">en-us16002773</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Overheating during heavy Usage ( For 1 Hours ).</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Ai Composition Feature in Camera.</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">X-Button functions and adding apps to easy access</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Speaker Stereo Sound Quality.</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Battery Draining fast in normal use.</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-                <div class="block-section" data-section="app">
-                    <div class="block-header"><span>Common Apps</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">WhatsApp (Test all functions)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">WhatsApp Business (Test all functions)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">YouTube (High resolution Videos)</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Facebook</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">WPS Office</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Snapchat</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Instagram</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-                <div class="block-section" data-section="prev">
-                    <div class="block-header"><span>Common Previous Series Issues</span></div>
-                    <ul class="node-list">
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Phone system prompts GBox as Power-intensive app <span class="doc-id">en-us16078529</span></span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">Unable to open or download PDF files shared in WhatsApp</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                        <li class="node-item"><input type="checkbox"><span class="node-text">side fingerprint sensor</span><button class="delete-node-btn" onclick="deleteItemElement(this)">✕</button></li>
-                    </ul>
-                    <button class="add-node-btn" onclick="addNewItemElement(this)">➕ Add Item</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
+    <div class="matrix-grid" id="matrixGrid"></div>
 </div>
 
 <script>
-    let editMode = false;
-    const ADMIN_PASSWORD = "1234";
+    const SITE_ENTRY_PASSWORD = "1234512345"; 
+    const ADMIN_EDIT_PASSWORD = "1234";       
+    
+    // ==========================================
+    // CRITICAL CLOUD ENGINE LINK PIPELINE
+    // ==========================================
+    const CLOUD_DATABASE_URL = "https://script.google.com/macros/s/AKfycbyzuQxBW3kW9nOhI5Kb6kG9Hjgua-OFPdhuq2DfmySC3AsKk-qXQNPcYFnTlzoeyA-1ZQ/exec"; 
 
-    function toggleLiveEdit() {
+    let editMode = false;
+
+    const DEFAULT_CHECKLIST_DATA = {
+        mate80: {
+            title: "Mate 80 Pro", script: "done",
+            key: [
+                { text: "Android Auto installation Guide. en-us16002773", checked: false },
+                { text: "Overheating during heavy Usage (For 1 Hours).", checked: false },
+                { text: "Ai Composition Feature in Camera.", checked: false },
+                { text: "AI features for the device en-us16086415.", checked: false },
+                { text: "Speaker Sound Quality.", checked: false },
+                { text: "Battery Draining fast in normal use.", checked: false }
+            ],
+            app: [
+                { text: "WhatsApp (Test all functions)", checked: false },
+                { text: "WhatsApp Business (Test all functions)", checked: false },
+                { text: "YouTube (High resolution Videos)", checked: false },
+                { text: "Facebook", checked: false },
+                { text: "WPS Office", checked: false },
+                { text: "Snapchat", checked: false },
+                { text: "Instagram", checked: false }
+            ],
+            prev: [
+                { text: "Unable to Upload YouTube Shorts", checked: false },
+                { text: "Camera produce abnormal sound when zoom in 2x or higher", checked: false },
+                { text: "side fingerprint sensor", checked: false },
+                { text: "Unable to open or download PDF files shared in WhatsApp", checked: false }
+            ]
+        },
+        matepad: {
+            title: "Matepad Pro Max", script: "done",
+            key: [
+                { text: "Inaccurate GPS/Location on Huawei Tablets. en-us16078162", checked: false },
+                { text: "Overheating during heavy Usage (For 1 Hours using go paint and Huawei notes).", checked: false },
+                { text: "Refresh rate during playing any game", checked: false },
+                { text: "Stylus response during drawing in go paint and writing in Huawei notes using Ai handwriting enhance and freescript", checked: false }
+            ],
+            app: [
+                { text: "WhatsApp (Link Companion)", checked: false },
+                { text: "WhatsApp Business (Link Companion)", checked: false },
+                { text: "YouTube (High resolution Videos)", checked: false },
+                { text: "Facebook", checked: false },
+                { text: "WPS PC (Arabic and English)", checked: false },
+                { text: "Netflix", checked: false },
+                { text: "Amazon Prime", checked: false }
+            ],
+            prev: []
+        },
+        watchx1: {
+            title: "Watch Kids X1 Pro", script: "done",
+            key: [
+                { text: "My HUAWEI Mate X7 series phone cannot wirelessly reverse charge HUAWEI FreeBuds Pro 5", checked: false },
+                { text: "delay when make calls, watch videos, or play games", checked: false },
+                { text: "Spatial Audio head tracking effects are not noticeable or sensitive enough en-us15914293", checked: false }
+            ],
+            app: [],
+            prev: [
+                { text: "The Lossless icon is not displayed when I connect my HUAWEI FreeBuds Pro 5/FreeBuds Pro 4/FreeBuds Pro 3 earbuds to my phone en-us15975613", checked: false },
+                { text: "The UI elements overlap on the pop-up screen after FreeBuds Pro 4 is connected to the phone. en-us16084677", checked: false },
+                { text: "HUAWEI FreeBuds 5i/FreeBuds 6/FreeArc/FreeBuds Pro 4 earbuds cannot be fully charged, or stop charging en-us16026161", checked: false }
+            ]
+        },
+        watchfit5: {
+            title: "Watch Fit 5 Series", script: "done",
+            key: [
+                { text: "Issues of launching the voice assistant on my watch en-us15818740", checked: false },
+                { text: "Mute incoming call using the watch", checked: false },
+                { text: "Install Spotify app and the app can control music through the watch", checked: false },
+                { text: "use the ECG on Huawei Watches en-us16055872", checked: false },
+                { text: "Group's name of WhatsApp notification is not displayed on Watch when connected with iOS device en-us15985122", checked: false }
+            ],
+            app: [
+                { text: "Spotify", checked: false },
+                { text: "Petal Maps", checked: false },
+                { text: "YouTube (High resolution Videos)", checked: false },
+                { text: "Facebook", checked: false },
+                { text: "WPS PC (Arabic and English)", checked: false },
+                { text: "Netflix", checked: false },
+                { text: "Amazon Prime", checked: false }
+            ],
+            prev: []
+        },
+        nova15: {
+            title: "Nova 15 Max", script: "done",
+            key: [
+                { text: "Android Auto installation Guide. en-us16002773", checked: false },
+                { text: "Overheating during heavy Usage ( For 1 Hours ).", checked: false },
+                { text: "Ai Composition Feature in Camera.", checked: false },
+                { text: "X-Button functions and adding apps to easy access", checked: false },
+                { text: "Speaker Stereo Sound Quality.", checked: false },
+                { text: "Battery Draining fast in normal use.", checked: false }
+            ],
+            app: [
+                { text: "WhatsApp (Test all functions)", checked: false },
+                { text: "WhatsApp Business (Test all functions)", checked: false },
+                { text: "YouTube (High resolution Videos)", checked: false },
+                { text: "Facebook", checked: false },
+                { text: "WPS Office", checked: false },
+                { text: "Snapchat", checked: false },
+                { text: "Instagram", checked: false }
+            ],
+            prev: [
+                { text: "Phone system prompts GBox as Power-intensive app en-us16078529", checked: false },
+                { text: "Unable to open or download PDF files shared in WhatsApp", checked: false },
+                { text: "side fingerprint sensor", checked: false }
+            ]
+        }
+    };
+
+    let activeStateDataset = DEFAULT_CHECKLIST_DATA;
+
+    async function fetchCloudState() {
+        if(CLOUD_DATABASE_URL === "PASTE_YOUR_GOOGLE_WEB_APP_URL_HERE") return;
+        try {
+            let res = await fetch(CLOUD_DATABASE_URL);
+            let json = await res.json();
+            if(json.status === "success" && json.data) {
+                activeStateDataset = json.data;
+            }
+        } catch(e) { console.log("Cloud read error:", e); }
+    }
+
+    async function syncStateToCloud() {
+        if(CLOUD_DATABASE_URL === "PASTE_YOUR_GOOGLE_WEB_APP_URL_HERE") return;
+        try {
+            await fetch(CLOUD_DATABASE_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(activeStateDataset)
+            });
+        } catch(e) { console.log("Cloud push error:", e); }
+    }
+
+    async function handleMasterAuthCheck() {
+        const inputVal = document.getElementById('masterGateKeyInput').value;
+        const errorNode = document.getElementById('authErrorNode');
+        const shield = document.getElementById('masterAuthShield');
+        const mainArea = document.getElementById('captureArea');
+
+        if (inputVal === SITE_ENTRY_PASSWORD) {
+            shield.style.display = 'none';
+            mainArea.style.visibility = 'visible'; 
+            await fetchCloudState(); // Fetch live global checks from Google script
+            renderMatrixDashboardGrid();
+        } else {
+            errorNode.style.display = 'block';
+            document.getElementById('masterGateKeyInput').value = '';
+        }
+    }
+
+    function renderMatrixDashboardGrid() {
+        const grid = document.getElementById('matrixGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        Object.keys(activeStateDataset).forEach(id => {
+            const prod = activeStateDataset[id];
+            const col = document.createElement('div');
+            col.className = 'product-column';
+            col.setAttribute('data-id', id);
+
+            let contentHTML = `
+                <div class="product-title-node" onblur="saveCurrentDOMToStateDataset()">${prod.title}</div>
+                <div class="product-content">
+                    <div class="block-section" data-section="script">
+                        <div class="block-header">
+                            <span>Sales Product Scripts</span>
+                            <select class="script-select status-${prod.script}" id="sel-${id}" onchange="updateScriptStatus(this, '${id}')">
+                                <option value="pending" ${prod.script === 'pending' ? 'selected' : ''}>✕ Pending</option>
+                                <option value="progress" ${prod.script === 'progress' ? 'selected' : ''}>⚠ In Progress</option>
+                                <option value="done" ${prod.script === 'done' ? 'selected' : ''}>✓ Done</option>
+                            </select>
+                        </div>
+                    </div>
+            `;
+
+            ['key', 'app', 'prev'].forEach(sec => {
+                let secTitle = sec === 'key' ? "Key Functions" : sec === 'app' ? "Common Apps" : "Common Previous Series Issues";
+                contentHTML += `
+                    <div class="block-section" data-section="${sec}">
+                        <div class="block-header"><span>${secTitle}</span></div>
+                        <ul class="node-list">
+                `;
+
+                if (prod[sec] && Array.isArray(prod[sec])) {
+                    prod[sec].forEach((item, index) => {
+                        let textDisplay = item.text;
+                        if(textDisplay.includes('en-us')) {
+                            textDisplay = textDisplay.replace(/(en-us\d+)/, '<span class="doc-id">$1</span>');
+                        }
+
+                        contentHTML += `
+                            <li class="node-item">
+                                <input type="checkbox" ${item.checked ? 'checked' : ''} onclick="handleCheckboxStateToggle(this, '${id}', '${sec}', ${index})">
+                                <span class="node-text" onblur="saveCurrentDOMToStateDataset()">${textDisplay}</span>
+                                <button class="delete-node-btn" onclick="deleteItemElement(this, '${id}', '${sec}', ${index})">✕</button>
+                            </li>
+                        `;
+                    });
+                }
+
+                contentHTML += `
+                        </ul>
+                        <button class="add-node-btn" onclick="addNewItemElement('${id}', '${sec}')">➕ Add Item</button>
+                    </div>
+                `;
+            });
+
+            contentHTML += `</div>`;
+            col.innerHTML = contentHTML;
+            grid.appendChild(col);
+            
+            let selectElem = col.querySelector('.script-select');
+            updateScriptStatus(selectElem, id, false);
+        });
+
+        refreshMetrics();
+    }
+
+    async function handleCheckboxStateToggle(chk, id, sec, idx) {
+        if(activeStateDataset[id] && activeStateDataset[id][sec] && activeStateDataset[id][sec][idx]) {
+            activeStateDataset[id][sec][idx].checked = chk.checked;
+            refreshMetrics();
+            await syncStateToCloud(); // Save checks directly to the cloud sheet
+        }
+    }
+
+    async function addNewItemElement(id, sec) {
+        if (!activeStateDataset[id][sec]) activeStateDataset[id][sec] = [];
+        activeStateDataset[id][sec].push({ text: "New Evaluation Parameter Target...", checked: false });
+        renderMatrixDashboardGrid();
+        if(editMode) enforceActiveEditStyles();
+        await syncStateToCloud();
+    }
+
+    async function deleteItemElement(btn, id, sec, idx) {
+        if (activeStateDataset[id] && activeStateDataset[id][sec]) {
+            activeStateDataset[id][sec].splice(idx, 1);
+            renderMatrixDashboardGrid();
+            if(editMode) enforceActiveEditStyles();
+            await syncStateToCloud();
+        }
+    }
+
+    async function saveCurrentDOMToStateDataset() {
+        document.querySelectorAll('.product-column').forEach(col => {
+            const id = col.getAttribute('data-id');
+            if (!activeStateDataset[id]) return;
+            activeStateDataset[id].title = col.querySelector('.product-title-node').innerText.trim();
+
+            ['key', 'app', 'prev'].forEach(sec => {
+                const rows = col.querySelectorAll(`.block-section[data-section="${sec}"] .node-item`);
+                rows.forEach((li, idx) => {
+                    if(activeStateDataset[id][sec] && activeStateDataset[id][sec][idx]) {
+                        activeStateDataset[id][sec][idx].text = li.querySelector('.node-text').innerText.trim();
+                    }
+                });
+            });
+        });
+        await syncStateToCloud();
+    }
+
+    function enforceActiveEditStyles() {
+        const textElements = document.querySelectorAll('.node-text, .product-title-node, .block-header span');
+        textElements.forEach(el => el.setAttribute('contenteditable', 'true'));
+    }
+
+    async function toggleLiveEdit() {
         if (!editMode) {
             const inputPass = prompt("Enter Admin Password to unlock editing privileges:");
-            if (inputPass !== ADMIN_PASSWORD) {
-                alert("Access Denied: Incorrect password.");
-                return;
-            }
+            if (inputPass !== ADMIN_EDIT_PASSWORD) { alert("Access Denied."); return; }
         }
         editMode = !editMode;
         const btn = document.getElementById('editModeBtn');
-        const textElements = document.querySelectorAll('.node-text, .product-title-node, .block-header span');
         if(editMode) {
             btn.textContent = "💾 Lock Admin Parameters";
             btn.classList.add('editing-active');
             document.body.classList.add('editable-active');
             document.body.classList.add('admin-unlocked');
-            textElements.forEach(el => el.setAttribute('contenteditable', 'true'));
+            enforceActiveEditStyles();
         } else {
+            await saveCurrentDOMToStateDataset();
             btn.textContent = "🔒 Unlock Admin Edit";
             btn.classList.remove('editing-active');
             document.body.classList.remove('editable-active');
             document.body.classList.remove('admin-unlocked');
-            textElements.forEach(el => el.removeAttribute('contenteditable'));
+            document.querySelectorAll('.node-text, .product-title-node, .block-header span').forEach(el => el.removeAttribute('contenteditable'));
+            renderMatrixDashboardGrid();
         }
-    }
-
-    function addNewItemElement(buttonElement) {
-        const parentSection = buttonElement.closest('.block-section');
-        const targetUL = parentSection.querySelector('.node-list');
-        const li = document.createElement('li');
-        li.className = 'node-item';
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.addEventListener('change', refreshMetrics);
-        const textSpan = document.createElement('span');
-        textSpan.className = 'node-text';
-        textSpan.textContent = 'New Evaluation Parameter Target...';
-        if (editMode) textSpan.setAttribute('contenteditable', 'true');
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'delete-node-btn';
-        deleteBtn.textContent = '✕';
-        deleteBtn.onclick = function() { deleteItemElement(deleteBtn); };
-        li.appendChild(checkbox);
-        li.appendChild(textSpan);
-        li.appendChild(deleteBtn);
-        targetUL.appendChild(li);
-        refreshMetrics();
-    }
-
-    function deleteItemElement(buttonElement) {
-        const rowItem = buttonElement.closest('.node-item');
-        if (rowItem) { rowItem.remove(); refreshMetrics(); }
     }
 
     function switchProductFilter(id) {
@@ -792,14 +881,21 @@
         }
     }
 
-    function updateScriptStatus(selectElement, prodId) {
+    async function updateScriptStatus(selectElement, prodId, updateStorage = true) {
+        if (!selectElement) return;
         selectElement.classList.remove('status-done', 'status-progress', 'status-pending');
         let labelText = "";
         if (selectElement.value === 'done') { selectElement.classList.add('status-done'); labelText = "✓ Done"; }
         else if (selectElement.value === 'progress') { selectElement.classList.add('status-progress'); labelText = "⚠ In Progress"; }
         else if (selectElement.value === 'pending') { selectElement.classList.add('status-pending'); labelText = "✕ Pending"; }
+        
         const tableBadge = document.getElementById(`m-script-${prodId}`);
         if(tableBadge) { tableBadge.className = `status-badge-inline ${selectElement.className}`; tableBadge.textContent = labelText; }
+
+        if(updateStorage && activeStateDataset[prodId]) {
+            activeStateDataset[prodId].script = selectElement.value;
+            await syncStateToCloud();
+        }
     }
 
     function executeSearch() {
@@ -815,18 +911,16 @@
     }
 
     function refreshMetrics() {
-        const columns = document.querySelectorAll('.product-column');
         let totalMaster = 0; let checkedMaster = 0;
         const sections = ['key', 'app', 'prev'];
-        columns.forEach(col => {
-            const prodId = col.getAttribute('data-id');
+        
+        Object.keys(activeStateDataset).forEach(prodId => {
             sections.forEach(sec => {
-                const secBlock = col.querySelector(`.block-section[data-section="${sec}"]`);
-                if(secBlock) {
-                    const checkboxes = secBlock.querySelectorAll('.node-item input[type="checkbox"]');
-                    const total = checkboxes.length;
-                    const checked = secBlock.querySelectorAll('.node-item input[type="checkbox"]:checked').length;
+                if (activeStateDataset[prodId] && activeStateDataset[prodId][sec]) {
+                    const total = activeStateDataset[prodId][sec].length;
+                    const checked = activeStateDataset[prodId][sec].filter(i => i.checked).length;
                     totalMaster += total; checkedMaster += checked;
+                    
                     const summaryBar = document.getElementById(`m-${sec}-${prodId}`);
                     const summaryTxt = document.getElementById(`txt-${sec}-${prodId}`);
                     if(summaryBar) { let percent = total > 0 ? Math.round((checked / total) * 100) : 0; summaryBar.style.width = percent + '%'; }
@@ -834,45 +928,34 @@
                 }
             });
         });
+
         const visualProgress = document.getElementById('trackerVisual');
         const metricLabel = document.getElementById('trackerText');
-        let totalPercent = totalMaster > 0 ? Math.round((checkedMaster / totalMaster) * 100) : 0;
-        visualProgress.style.width = totalPercent + '%';
-        metricLabel.textContent = `${totalPercent}% Completed (${checkedMaster}/${totalMaster})`;
+        if (visualProgress && metricLabel) {
+            let totalPercent = totalMaster > 0 ? Math.round((checkedMaster / totalMaster) * 100) : 0;
+            visualProgress.style.width = totalPercent + '%';
+            metricLabel.textContent = `${totalPercent}% Completed (${checkedMaster}/${totalMaster})`;
+        }
     }
 
-    // =============================================================
-    // STRICTLY VERIFIED SECURE EXPORT INTERCEPTOR
-    // =============================================================
     function securedDownloadRouter() {
-        // Explicit Intercept Check: Always challenge the user for the code here
         const inputCheck = prompt("Security Shield: Enter Admin Verification Code to download data files:");
-        
-        if (inputCheck !== ADMIN_PASSWORD) {
-            alert("Security Exception: Denied. Incorrect verification code.");
-            return;
-        }
+        if (inputCheck !== ADMIN_EDIT_PASSWORD) { alert("Security Exception: Denied."); return; }
 
-        // Only runs the data building logic if the prompt matches "1234"
         const format = document.getElementById('exportFormat').value;
-
-        if (format === 'pdf') {
-            window.print();
-        } 
+        if (format === 'pdf') { window.print(); } 
         else if (format === 'excel') {
             let csvContent = "data:text/csv;charset=utf-8,Category,Product,Requirement/Item,Status\n";
-            document.querySelectorAll('.product-column').forEach(col => {
-                const pName = col.querySelector('.product-title-node').innerText.trim();
-                const scriptVal = col.querySelector('.script-select').value.toUpperCase();
-                csvContent += `"Sales Script","${pName}","Script Configuration Status","${scriptVal}"\n`;
-
+            Object.keys(activeStateDataset).forEach(id => {
+                const p = activeStateDataset[id];
+                csvContent += `"Sales Script","${p.title}","Script Status","${p.script.toUpperCase()}"\n`;
                 ['key', 'app', 'prev'].forEach(sec => {
-                    let secLabel = sec === 'key' ? "Key Functions" : sec === 'app' ? "Common Apps" : "Previous Series Issues";
-                    col.querySelectorAll(`.block-section[data-section="${sec}"] .node-item`).forEach(li => {
-                        let text = li.querySelector('.node-text').innerText.replace(/"/g, '""').trim();
-                        let checked = li.querySelector('input[type="checkbox"]').checked ? "PASSED" : "UNTESTED";
-                        csvContent += `"${secLabel}","${pName}","${text}","${checked}"\n`;
-                    });
+                    let lbl = sec === 'key' ? "Key Functions" : sec === 'app' ? "Common Apps" : "Previous Series Issues";
+                    if(p[sec]) {
+                        p[sec].forEach(item => {
+                            csvContent += `"${lbl}","${p.title}","${item.text.replace(/"/g, '""')}","${item.checked ? 'PASSED' : 'UNTESTED'}"\n`;
+                        });
+                    }
                 });
             });
             triggerNativeDownload(encodeURI(csvContent), "Operational_Checklist_Data.csv");
@@ -891,11 +974,6 @@
         downloadAnchor.click();
         downloadAnchor.remove();
     }
-
-    document.querySelectorAll('.node-item input[type="checkbox"]').forEach(element => {
-        element.addEventListener('change', refreshMetrics);
-    });
-    refreshMetrics();
 </script>
 
 </body>
